@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class MainCanvas : MonoBehaviour
@@ -15,15 +15,20 @@ public class MainCanvas : MonoBehaviour
     {
         _buttons[0].onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("Stage1");
+            LoadSceneFromAddressable("Stage1");
         });
         _buttons[1].onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("Stage2");
+            LoadSceneFromAddressable("Stage2");
         });
         _buttons[2].onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("Stage3");
+            LoadSceneFromAddressable("Stage3");
         });
+    }
+    
+    void LoadSceneFromAddressable(string stageName)
+    {
+        Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{stageName}.unity");
     }
 }
