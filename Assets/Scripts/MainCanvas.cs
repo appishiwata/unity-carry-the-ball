@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.UI;
 
 public class MainCanvas : MonoBehaviour
 {
-    [SerializeField] Button[] _buttons;
-    
     private readonly List<string> _stageList = new List<string>();
+    
+    [SerializeField] LoadStageButton _buttonPrefab;
+    [SerializeField] Transform _buttonParent;
     
     private void Awake()
     {
@@ -18,26 +19,19 @@ public class MainCanvas : MonoBehaviour
 
     async void Start()
     {
-        _buttons[0].onClick.AddListener(() =>
-        {
-            LoadSceneFromAddressable("Stage1");
-        });
-        _buttons[1].onClick.AddListener(() =>
-        {
-            LoadSceneFromAddressable("Stage2");
-        });
-        _buttons[2].onClick.AddListener(() =>
-        {
-            LoadSceneFromAddressable("Stage3");
-        });
-        
         await LoadStageList();
-        
-        // DEBUG: ステージ一覧を出力
+
         foreach (var stage in _stageList)
         {
             Debug.Log(stage);
+            var button = Instantiate(_buttonPrefab, _buttonParent);
+            button.SetStageIndex(ExtractStageNumber(stage));
         }
+
+        LoadStageButton.OnClicked.Subscribe(stageName =>
+        {
+            LoadSceneFromAddressable(stageName);
+        });
     }
     
     void LoadSceneFromAddressable(string stageName)
