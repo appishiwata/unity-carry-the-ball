@@ -77,3 +77,6 @@ crashlytics-build.properties
 
 /Assets/ScreenShots.meta
 /Assets/ScreenShots/*
+
+Builds_iOS/*
+ServerData/*
