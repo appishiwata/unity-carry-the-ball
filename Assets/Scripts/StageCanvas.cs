@@ -7,9 +7,12 @@ public class StageCanvas : MonoBehaviour
 {
     [SerializeField] Button _nextButton;
     [SerializeField] int _stageIndex;
+    [SerializeField] HeaderCell _headerCell;
 
     void Start()
     {
+        Instantiate(_headerCell, transform);
+        
         _nextButton.OnClickAsObservable().Subscribe(_ =>
         {
             var nextStageIndex = _stageIndex + 1;
