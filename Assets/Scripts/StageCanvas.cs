@@ -1,3 +1,5 @@
+using DG.Tweening;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,6 +11,9 @@ public class StageCanvas : MonoBehaviour
     [SerializeField] int _stageIndex;
     [SerializeField] HeaderCell _headerCell;
     [SerializeField] GameObject _clearPanel;
+    
+    [SerializeField] TextMeshProUGUI _tutorialText1;
+    [SerializeField] TextMeshProUGUI _tutorialText2;
 
     void Start()
     {
@@ -21,6 +26,15 @@ public class StageCanvas : MonoBehaviour
             // TODO 共通化
             Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
         });
+        
+        // チュートリアル用
+        if (_stageIndex == 1)
+        {
+            _tutorialText1.DOFade(0, 0);
+            _tutorialText2.DOFade(0, 0);
+            _tutorialText1.DOFade(1, 1).SetDelay(2);
+            _tutorialText2.DOFade(1, 1).SetDelay(5);
+        }
     }
     
     public void ShowClearPanel()
