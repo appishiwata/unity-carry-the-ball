@@ -49,8 +49,8 @@ public class IngamePanel : MonoBehaviour
         _tutorialText2.DOFade(0, 0);
         if (_stageIndex == 1)
         {
-            _tutorialText1.DOFade(1, 1).SetDelay(2);
-            _tutorialText2.DOFade(1, 1).SetDelay(5);
+            _tutorialText1.DOFade(1, 1).SetDelay(3);
+            _tutorialText2.DOFade(1, 1).SetDelay(6);
         }
     }
     

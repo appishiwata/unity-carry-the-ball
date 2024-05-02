@@ -13,7 +13,6 @@ public class BallController : MonoBehaviour
     [SerializeField] Transform _goalTransform;
     private Vector3 _startPosition;
     private Vector3 _goalPosition;
-    //[SerializeField] ParticleSystem _goalEffect;
     
     void Start()
     {
@@ -68,22 +67,29 @@ public class BallController : MonoBehaviour
         // ゴール範囲に入ったらゴール地点に移動
         if (other.CompareTag("Goal"))
         {
-            //goalEffect.Play();
-            
-            transform.DOMove(_goalPosition, 0.8f).SetDelay(0.25f);
-            
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.isKinematic = true;
             }
-
-            // TODO 別スクリプト使う処理をシングルトンで共通化
-            IngamePanel ingamePanel = FindObjectOfType<IngamePanel>();
-            if (ingamePanel != null)
-            {
-                ingamePanel.ShowClearPanel();
-            }
+            
+            var sequence = DOTween.Sequence();
+            sequence.AppendInterval(0.1f)
+                .AppendCallback(() =>
+                {
+                    Camera.main!.DOOrthoSize(8f, 2f);
+                    transform.DOMove(_goalPosition, 0.8f);
+                })
+                .AppendInterval(0.8f)
+                .AppendCallback(() =>
+                {
+                    // TODO 別スクリプト使う処理をシングルトンで共通化
+                    IngamePanel ingamePanel = FindObjectOfType<IngamePanel>();
+                    if (ingamePanel != null)
+                    {
+                        ingamePanel.ShowClearPanel();
+                    }
+                });
         }
     }
 }
