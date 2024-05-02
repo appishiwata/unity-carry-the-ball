@@ -24,16 +24,48 @@ public class IngamePanel : MonoBehaviour
     {
         _stageNameText.text = $"Stage{_stageIndex}";
         
-        _menuButton.onClick.AddListener(() =>
+        _menuButton.OnClickAsObservable().Subscribe(_ =>
         {
-            _menuPanel.SetActive(true);
-            Time.timeScale = 0f;
+            var sequence = DOTween.Sequence();
+            sequence.AppendCallback(() =>
+                {
+                    _menuButton.transform.DOMoveY(100f, 0.1f).SetEase(Ease.OutBack).SetRelative(true);
+                })
+                .AppendInterval(0.1f)
+                .AppendCallback(() =>
+                {
+                    _menuButton.transform.DOMoveY(-100f, 0.1f).SetEase(Ease.OutBack).SetRelative(true);
+                })
+                .AppendInterval(0.1f)
+                .AppendCallback(() =>
+                {
+                    _menuButton.gameObject.SetActive(false);
+                    _closeButton.gameObject.SetActive(true);
+                    _menuPanel.SetActive(true);
+                    Time.timeScale = 0f;
+                });
         });
         
-        _closeButton.onClick.AddListener(() =>
+        _closeButton.OnClickAsObservable().Subscribe(_ =>
         {
             _menuPanel.SetActive(false);
             Time.timeScale = 1f;
+
+            var sequence = DOTween.Sequence();
+            sequence.AppendCallback(() =>
+                {
+                    _menuButton.transform.DOMoveY(100f, 0.1f).SetEase(Ease.OutBack).SetRelative(true);
+                })
+                .AppendInterval(0.1f)
+                .AppendCallback(() =>
+                {
+                    _menuButton.transform.DOMoveY(-100f, 0.1f).SetEase(Ease.OutBack).SetRelative(true);
+                })
+                .AppendCallback(() =>
+                {
+                    _closeButton.gameObject.SetActive(false);
+                    _menuButton.gameObject.SetActive(true);
+                });
         });
 
         _nextButton.OnClickAsObservable().Subscribe(_ =>
@@ -61,6 +93,12 @@ public class IngamePanel : MonoBehaviour
     
     public void ShowClearPanel()
     {
+        if (_stageIndex == 1)
+        {
+            _tutorialText1.gameObject.SetActive(false);
+            _tutorialText2.gameObject.SetActive(false);
+        }
+        
         _clearPanel.SetActive(true);
     }
 }
