@@ -22,6 +22,9 @@ public class BallController : MonoBehaviour
         
         _startPosition = _startTransform.position;
         _goalPosition = _goalTransform.position;
+        
+        // スタート位置から始める
+        transform.position = _startPosition;
     
         // フリック操作で移動
         this.UpdateAsObservable().Subscribe(_ => 
@@ -76,10 +79,10 @@ public class BallController : MonoBehaviour
             }
 
             // TODO 別スクリプト使う処理をシングルトンで共通化
-            StageCanvas stageCanvas = FindObjectOfType<StageCanvas>();
-            if (stageCanvas != null)
+            IngamePanel ingamePanel = FindObjectOfType<IngamePanel>();
+            if (ingamePanel != null)
             {
-                stageCanvas.ShowClearPanel();
+                ingamePanel.ShowClearPanel();
             }
         }
     }
