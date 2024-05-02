@@ -72,8 +72,14 @@ public class BallController : MonoBehaviour
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
+            }
+
+            // TODO 別スクリプト使う処理をシングルトンで共通化
+            StageCanvas stageCanvas = FindObjectOfType<StageCanvas>();
+            if (stageCanvas != null)
+            {
+                stageCanvas.ShowClearPanel();
             }
         }
     }

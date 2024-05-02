@@ -8,6 +8,7 @@ public class StageCanvas : MonoBehaviour
     [SerializeField] Button _nextButton;
     [SerializeField] int _stageIndex;
     [SerializeField] HeaderCell _headerCell;
+    [SerializeField] GameObject _clearPanel;
 
     void Start()
     {
@@ -20,5 +21,10 @@ public class StageCanvas : MonoBehaviour
             // TODO 共通化
             Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
         });
+    }
+    
+    public void ShowClearPanel()
+    {
+        _clearPanel.SetActive(true);
     }
 }
