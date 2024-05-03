@@ -12,6 +12,9 @@ public class MainCanvas : MonoBehaviour
     [SerializeField] LoadStageButton _buttonPrefab;
     [SerializeField] Transform _buttonParent;
     
+    [SerializeField] Audio _audioPrefab;
+    private Audio _audio;
+    
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -19,6 +22,9 @@ public class MainCanvas : MonoBehaviour
 
     async void Start()
     {
+        _audio = Instantiate(_audioPrefab, transform);
+        _audio.PlayBGM();
+        
         await LoadStageList();
 
         foreach (var stage in _stageList)
@@ -28,8 +34,10 @@ public class MainCanvas : MonoBehaviour
             button.SetStageIndex(ExtractStageNumber(stage));
         }
 
-        LoadStageButton.OnClicked.Subscribe(stageName =>
+        LoadStageButton.OnClicked.Subscribe(async stageName =>
         {
+            _audio.PlaySE(Audio.Clip.SelectStage);
+            await _audio.FadeOutBGM();
             LoadSceneFromAddressable(stageName);
         });
     }

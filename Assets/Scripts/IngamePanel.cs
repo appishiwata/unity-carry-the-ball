@@ -18,14 +18,21 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI _tutorialText1;
     [SerializeField] TextMeshProUGUI _tutorialText2;
     
+    [SerializeField] Audio _audioPrefab;
+    private Audio _audio;
+    
     private int _stageIndex;
     
     void Start()
     {
+        _audio = Instantiate(_audioPrefab, transform);
+        
         _stageNameText.text = $"Stage{_stageIndex}";
         
         _menuButton.OnClickAsObservable().Subscribe(_ =>
         {
+            _audio.PlaySE(Audio.Clip.ClickMenu);
+            
             var sequence = DOTween.Sequence();
             sequence.AppendCallback(() =>
                 {
@@ -48,6 +55,8 @@ public class IngamePanel : MonoBehaviour
         
         _closeButton.OnClickAsObservable().Subscribe(_ =>
         {
+            _audio.PlaySE(Audio.Clip.ClickMenu);
+            
             _menuPanel.SetActive(false);
             Time.timeScale = 1f;
 
