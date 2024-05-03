@@ -18,6 +18,11 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI _tutorialText1;
     [SerializeField] TextMeshProUGUI _tutorialText2;
     
+    [SerializeField] Button _bgmOffButton;
+    [SerializeField] Button _bgmOnButton;
+    [SerializeField] Button _seOffButton;
+    [SerializeField] Button _seOnButton;
+    
     [SerializeField] Audio _audioPrefab;
     private Audio _audio;
     
@@ -26,8 +31,39 @@ public class IngamePanel : MonoBehaviour
     void Start()
     {
         _audio = Instantiate(_audioPrefab, transform);
+        _audio.PlayBGM();
         
         _stageNameText.text = $"Stage{_stageIndex}";
+        
+        _bgmOffButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            _bgmOffButton.gameObject.SetActive(false);
+            _bgmOnButton.gameObject.SetActive(true);
+            _audio.SetBGMVolume(0f);
+        });
+        
+        _bgmOnButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            _bgmOffButton.gameObject.SetActive(true);
+            _bgmOnButton.gameObject.SetActive(false);
+            _audio.SetBGMVolume(1f);
+        });
+        
+        _seOffButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            _seOffButton.gameObject.SetActive(false);
+            _seOnButton.gameObject.SetActive(true);
+            _audio.SetSEVolume(0f);
+        });
+        
+        _seOnButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            _audio.PlaySE(Audio.Clip.ClickMenu);
+
+            _seOffButton.gameObject.SetActive(true);
+            _seOnButton.gameObject.SetActive(false);
+            _audio.SetSEVolume(1f);
+        });
         
         _menuButton.OnClickAsObservable().Subscribe(_ =>
         {

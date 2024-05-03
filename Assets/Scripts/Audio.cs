@@ -22,11 +22,23 @@ public class Audio : MonoBehaviour
     
     public void PlayBGM()
     {
+        _audioSourceBGM.DOFade(0f, 0);
         _audioSourceBGM.Play();
+        _audioSourceBGM.DOFade(1f, 2f);
     }
     
     public async UniTask FadeOutBGM()
     {
-        await _audioSourceBGM.DOFade(0f, 1.5f);
+        await _audioSourceBGM.DOFade(0f, 2f);
+    }
+    
+    public void SetBGMVolume(float volume)
+    {
+        _audioSourceBGM.volume = volume;
+    }
+    
+    public void SetSEVolume(float volume)
+    {
+        _audioSourceSE.volume = volume;
     }
 }
