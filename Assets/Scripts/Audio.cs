@@ -11,6 +11,8 @@ public class Audio : MonoBehaviour
     {
         SelectStage,
         ClickMenu,
+        ClearStage,
+        MoveNext,
     }
     
     [SerializeField] AudioClip[] _clips;
@@ -27,9 +29,9 @@ public class Audio : MonoBehaviour
         _audioSourceBGM.DOFade(1f, 2f);
     }
     
-    public async UniTask FadeOutBGM()
+    public void FadeOutBGM()
     {
-        await _audioSourceBGM.DOFade(0f, 2f);
+        _audioSourceBGM.DOFade(0f, 2f);
     }
     
     public void SetBGMVolume(float volume)

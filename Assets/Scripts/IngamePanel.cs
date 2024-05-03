@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] Button _closeButton;
 
     [SerializeField] GameObject _clearPanel;
+    [SerializeField] CanvasGroup _clearPanelCanvasGroup;
     [SerializeField] Button _nextButton;
     [SerializeField] TextMeshProUGUI _stageNameText;
     
@@ -113,11 +115,29 @@ public class IngamePanel : MonoBehaviour
                 });
         });
 
-        _nextButton.OnClickAsObservable().Subscribe(_ =>
+        _nextButton.OnClickAsObservable().Subscribe(async _ =>
         {
+            /*
             var nextStageIndex = _stageIndex + 1;
             var nextStageName = $"Stage{nextStageIndex}";
             // TODO 共通化
+            Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
+            */
+
+            var nextStageIndex = _stageIndex + 1;
+            var nextStageName = $"Stage{nextStageIndex}";
+            
+            var sequence = DOTween.Sequence();
+            
+            await sequence
+                .Append(_clearPanelCanvasGroup.DOFade(0, 0.3f))
+                .Append(_stageNameText.DOFade(0, 0.3f))
+                .AppendInterval(0.5f);
+
+            Camera.main!.transform.DOMoveX(-12f, 0.5f).SetRelative();
+            
+            await UniTask.Delay(300);
+            
             Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
         });
         

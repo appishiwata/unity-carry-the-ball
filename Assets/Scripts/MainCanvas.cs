@@ -37,7 +37,7 @@ public class MainCanvas : MonoBehaviour
         LoadStageButton.OnClicked.Subscribe(async stageName =>
         {
             _audio.PlaySE(Audio.Clip.SelectStage);
-            await _audio.FadeOutBGM();
+            //await _audio.FadeOutBGM();
             LoadSceneFromAddressable(stageName);
         });
     }

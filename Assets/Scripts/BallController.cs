@@ -67,6 +67,8 @@ public class BallController : MonoBehaviour
         // ゴール範囲に入ったらゴール地点に移動
         if (other.CompareTag("Goal"))
         {
+            
+            
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -77,7 +79,7 @@ public class BallController : MonoBehaviour
             sequence.AppendInterval(0.1f)
                 .AppendCallback(() =>
                 {
-                    Camera.main!.DOOrthoSize(8f, 2f);
+                    //Camera.main!.DOOrthoSize(8f, 2f);
                     transform.DOMove(_goalPosition, 0.8f);
                 })
                 .AppendInterval(0.8f)
@@ -90,6 +92,19 @@ public class BallController : MonoBehaviour
                         ingamePanel.ShowClearPanel();
                     }
                 });
+        }
+    }
+    
+    public void ResetBall()
+    {
+        transform.position = _startPosition;
+        
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = false;
         }
     }
 }
