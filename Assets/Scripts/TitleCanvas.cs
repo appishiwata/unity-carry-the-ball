@@ -27,7 +27,7 @@ public class TitleCanvas : MonoBehaviour
 
     void Start()
     {
-        _audio.PlayBGM();
+        Audio.Instance.PlayBGM();
         
         _startButton.OnClickAsObservable().Subscribe(async _ =>
         {
@@ -37,7 +37,7 @@ public class TitleCanvas : MonoBehaviour
             _startButtonCanvasGroup.DOFade(0, 0.5f);
             
             _backgroundParticle.Stop();
-            _audio.PlaySE(Audio.Clip.SelectStage);
+            Audio.Instance.PlaySE(Audio.Clip.SelectStage);
             
             await UniTask.Delay(1000);
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UniRx;
 using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public class IngamePanel : MonoBehaviour
 {
@@ -24,12 +25,21 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] Button _bgmOnButton;
     [SerializeField] Button _seOffButton;
     [SerializeField] Button _seOnButton;
+
+    [SerializeField] Button _titleButton;
     
     private int _stageIndex;
     
     void Start()
     {
         _stageNameText.text = $"Stage{_stageIndex}";
+        
+        _titleButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            Time.timeScale = 1f;
+            Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
+            SceneManager.LoadSceneAsync("TitleScene");
+        });
         
         _bgmOffButton.OnClickAsObservable().Subscribe(_ =>
         {
