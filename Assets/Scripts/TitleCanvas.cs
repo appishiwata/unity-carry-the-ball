@@ -4,7 +4,6 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TitleCanvas : MonoBehaviour
@@ -18,8 +17,7 @@ public class TitleCanvas : MonoBehaviour
     
     [SerializeField] BallController _ballController;
     
-    [SerializeField] Audio _audioPrefab;
-    private Audio _audio;
+    [SerializeField] Audio _audio;
 
     private void Awake()
     {
@@ -28,14 +26,12 @@ public class TitleCanvas : MonoBehaviour
 
     void Start()
     {
-        _audio = Instantiate(_audioPrefab, transform);
         _audio.PlayBGM();
         
         _startButton.OnClickAsObservable().Subscribe(async _ =>
         {
             _backgroundParticle.Stop();
             _audio.PlaySE(Audio.Clip.SelectStage);
-            _audio.FadeOutBGM();
             
             await UniTask.Delay(1000);
 
@@ -47,6 +43,8 @@ public class TitleCanvas : MonoBehaviour
                 .Append(_startButtonCanvasGroup.DOFade(0, 0.2f));
             
             await UniTask.Delay(1000);
+            
+            Audio.Instance.PlaySE(Audio.Clip.MoveNext);
 
             Camera.main!.transform.DOMoveX(-12f, 0.5f).SetRelative();
             

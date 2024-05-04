@@ -67,7 +67,7 @@ public class BallController : MonoBehaviour
         // ゴール範囲に入ったらゴール地点に移動
         if (other.CompareTag("Goal"))
         {
-            
+            Audio.Instance.PlaySE(Audio.Clip.ClearStage);
             
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null)

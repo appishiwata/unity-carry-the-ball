@@ -25,51 +25,45 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] Button _seOffButton;
     [SerializeField] Button _seOnButton;
     
-    [SerializeField] Audio _audioPrefab;
-    private Audio _audio;
-    
     private int _stageIndex;
     
     void Start()
     {
-        _audio = Instantiate(_audioPrefab, transform);
-        _audio.PlayBGM();
-        
         _stageNameText.text = $"Stage{_stageIndex}";
         
         _bgmOffButton.OnClickAsObservable().Subscribe(_ =>
         {
             _bgmOffButton.gameObject.SetActive(false);
             _bgmOnButton.gameObject.SetActive(true);
-            _audio.SetBGMVolume(0f);
+            Audio.Instance.SetBGMVolume(0f);
         });
         
         _bgmOnButton.OnClickAsObservable().Subscribe(_ =>
         {
             _bgmOffButton.gameObject.SetActive(true);
             _bgmOnButton.gameObject.SetActive(false);
-            _audio.SetBGMVolume(1f);
+            Audio.Instance.SetBGMVolume(1f);
         });
         
         _seOffButton.OnClickAsObservable().Subscribe(_ =>
         {
             _seOffButton.gameObject.SetActive(false);
             _seOnButton.gameObject.SetActive(true);
-            _audio.SetSEVolume(0f);
+            Audio.Instance.SetSEVolume(0f);
         });
         
         _seOnButton.OnClickAsObservable().Subscribe(_ =>
         {
-            _audio.PlaySE(Audio.Clip.ClickMenu);
+            Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
 
             _seOffButton.gameObject.SetActive(true);
             _seOnButton.gameObject.SetActive(false);
-            _audio.SetSEVolume(1f);
+            Audio.Instance.SetSEVolume(1f);
         });
         
         _menuButton.OnClickAsObservable().Subscribe(_ =>
         {
-            _audio.PlaySE(Audio.Clip.ClickMenu);
+            Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
             
             var sequence = DOTween.Sequence();
             sequence.AppendCallback(() =>
@@ -93,7 +87,7 @@ public class IngamePanel : MonoBehaviour
         
         _closeButton.OnClickAsObservable().Subscribe(_ =>
         {
-            _audio.PlaySE(Audio.Clip.ClickMenu);
+            Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
             
             _menuPanel.SetActive(false);
             Time.timeScale = 1f;
@@ -133,6 +127,8 @@ public class IngamePanel : MonoBehaviour
                 .Append(_clearPanelCanvasGroup.DOFade(0, 0.3f))
                 .Append(_stageNameText.DOFade(0, 0.3f))
                 .AppendInterval(0.5f);
+            
+            Audio.Instance.PlaySE(Audio.Clip.MoveNext);
 
             Camera.main!.transform.DOMoveX(-12f, 0.5f).SetRelative();
             

@@ -1,9 +1,10 @@
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
 public class Audio : MonoBehaviour
 {
+    public static Audio Instance { get; private set; }
+    
     [SerializeField] AudioSource _audioSourceBGM;
     [SerializeField] AudioSource _audioSourceSE;
     
@@ -16,6 +17,19 @@ public class Audio : MonoBehaviour
     }
     
     [SerializeField] AudioClip[] _clips;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     
     public void PlaySE(Clip clip)
     {
