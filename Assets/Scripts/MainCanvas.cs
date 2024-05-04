@@ -34,10 +34,9 @@ public class MainCanvas : MonoBehaviour
             button.SetStageIndex(ExtractStageNumber(stage));
         }
 
-        LoadStageButton.OnClicked.Subscribe(async stageName =>
+        LoadStageButton.OnClicked.Subscribe(stageName =>
         {
             _audio.PlaySE(Audio.Clip.SelectStage);
-            //await _audio.FadeOutBGM();
             LoadSceneFromAddressable(stageName);
         });
     }

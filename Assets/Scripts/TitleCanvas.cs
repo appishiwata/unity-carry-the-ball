@@ -12,6 +12,7 @@ public class TitleCanvas : MonoBehaviour
     
     [SerializeField] TextMeshProUGUI _titleText;
     [SerializeField] CanvasGroup _startButtonCanvasGroup;
+    [SerializeField] TextMeshProUGUI _startButtonText;
     
     [SerializeField] ParticleSystem _backgroundParticle;
     
@@ -30,6 +31,11 @@ public class TitleCanvas : MonoBehaviour
         
         _startButton.OnClickAsObservable().Subscribe(async _ =>
         {
+            _startButtonCanvasGroup.interactable = false;
+            _startButton.transform.DOMoveY(50f, 0.5f).SetRelative();
+            _startButtonText.transform.DOScale(2f, 0.5f);
+            _startButtonCanvasGroup.DOFade(0, 0.5f);
+            
             _backgroundParticle.Stop();
             _audio.PlaySE(Audio.Clip.SelectStage);
             
