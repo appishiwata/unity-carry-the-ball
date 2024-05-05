@@ -38,14 +38,7 @@ public class Audio : MonoBehaviour
     
     public void PlayBGM()
     {
-        _audioSourceBGM.DOFade(0f, 0);
         _audioSourceBGM.Play();
-        _audioSourceBGM.DOFade(1f, 2f);
-    }
-    
-    public void FadeOutBGM()
-    {
-        _audioSourceBGM.DOFade(0f, 2f);
     }
     
     public void SetBGMVolume(float volume)

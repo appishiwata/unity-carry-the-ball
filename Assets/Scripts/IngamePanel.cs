@@ -34,6 +34,11 @@ public class IngamePanel : MonoBehaviour
     {
         _stageNameText.text = $"Stage{_stageIndex}";
         
+        _bgmOffButton.gameObject.SetActive(SaveManager.Instance.BgmVolume == 1f);
+        _bgmOnButton.gameObject.SetActive(SaveManager.Instance.BgmVolume == 0f);
+        _seOffButton.gameObject.SetActive(SaveManager.Instance.SeVolume == 1f);
+        _seOnButton.gameObject.SetActive(SaveManager.Instance.SeVolume == 0f);
+        
         _titleButton.OnClickAsObservable().Subscribe(_ =>
         {
             Time.timeScale = 1f;
@@ -46,6 +51,7 @@ public class IngamePanel : MonoBehaviour
             _bgmOffButton.gameObject.SetActive(false);
             _bgmOnButton.gameObject.SetActive(true);
             Audio.Instance.SetBGMVolume(0f);
+            SaveManager.Instance.BgmVolume = 0f;
         });
         
         _bgmOnButton.OnClickAsObservable().Subscribe(_ =>
@@ -53,6 +59,7 @@ public class IngamePanel : MonoBehaviour
             _bgmOffButton.gameObject.SetActive(true);
             _bgmOnButton.gameObject.SetActive(false);
             Audio.Instance.SetBGMVolume(1f);
+            SaveManager.Instance.BgmVolume = 1f;
         });
         
         _seOffButton.OnClickAsObservable().Subscribe(_ =>
@@ -60,6 +67,7 @@ public class IngamePanel : MonoBehaviour
             _seOffButton.gameObject.SetActive(false);
             _seOnButton.gameObject.SetActive(true);
             Audio.Instance.SetSEVolume(0f);
+            SaveManager.Instance.SeVolume = 0f;
         });
         
         _seOnButton.OnClickAsObservable().Subscribe(_ =>
@@ -69,6 +77,7 @@ public class IngamePanel : MonoBehaviour
             _seOffButton.gameObject.SetActive(true);
             _seOnButton.gameObject.SetActive(false);
             Audio.Instance.SetSEVolume(1f);
+            SaveManager.Instance.SeVolume = 1f;
         });
         
         _menuButton.OnClickAsObservable().Subscribe(_ =>

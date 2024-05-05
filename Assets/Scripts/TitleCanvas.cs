@@ -13,6 +13,7 @@ public class TitleCanvas : MonoBehaviour
     [SerializeField] TextMeshProUGUI _titleText;
     [SerializeField] CanvasGroup _startButtonCanvasGroup;
     [SerializeField] TextMeshProUGUI _startButtonText;
+    [SerializeField] TextMeshProUGUI _stageInfoText;
     
     [SerializeField] ParticleSystem _backgroundParticle;
     
@@ -27,7 +28,11 @@ public class TitleCanvas : MonoBehaviour
 
     void Start()
     {
+        Audio.Instance.SetBGMVolume(SaveManager.Instance.BgmVolume);
+        Audio.Instance.SetSEVolume(SaveManager.Instance.SeVolume);
         Audio.Instance.PlayBGM();
+        
+        _stageInfoText.text = $"Stage {SaveManager.Instance.CurrentStageIndex} / {SaveManager.Instance.StageOpened}";
         
         _startButton.OnClickAsObservable().Subscribe(async _ =>
         {
@@ -45,10 +50,8 @@ public class TitleCanvas : MonoBehaviour
             
             var sequence = DOTween.Sequence();
             await sequence
-                .Append(_titleText.DOFade(0, 0.2f))
-                .Append(_startButtonCanvasGroup.DOFade(0, 0.2f));
-            
-            await UniTask.Delay(1000);
+                .Append(_titleText.DOFade(0, 1f))
+                .Append(_startButtonCanvasGroup.DOFade(0, 1f));
             
             Audio.Instance.PlaySE(Audio.Clip.MoveNext);
 
@@ -56,8 +59,7 @@ public class TitleCanvas : MonoBehaviour
             
             await UniTask.Delay(300);
             
-            var stageName = "Stage1";
-            Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{stageName}.unity");
+            Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{SaveManager.Instance.CurrentStageName}.unity");
         });
     }
 }

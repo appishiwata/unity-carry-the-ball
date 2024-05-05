@@ -14,6 +14,8 @@ public class BallController : MonoBehaviour
     private Vector3 _startPosition;
     private Vector3 _goalPosition;
     
+    private bool hasReachedGoal = false;
+    
     void Start()
     {
         _ballRigidbody = GetComponent<Rigidbody>();
@@ -65,8 +67,11 @@ public class BallController : MonoBehaviour
         }
 
         // ゴール範囲に入ったらゴール地点に移動
-        if (other.CompareTag("Goal"))
+        if (!hasReachedGoal && other.CompareTag("Goal"))
         {
+            hasReachedGoal = true;
+
+            SaveManager.Instance.StageCleared++;
             Audio.Instance.PlaySE(Audio.Clip.ClearStage);
             
             Rigidbody rb = GetComponent<Rigidbody>();
