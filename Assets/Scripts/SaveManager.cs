@@ -94,4 +94,10 @@ public class SaveManager
     public int CurrentStageIndex => _gameData.StageCleared + 1;
     
     public string CurrentStageName => $"Stage{CurrentStageIndex}";
+    
+    public void ResetData()
+    {
+        PlayerPrefs.DeleteAll();
+        LoadData();
+    }
 }

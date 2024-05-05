@@ -27,6 +27,7 @@ public class IngamePanel : MonoBehaviour
     [SerializeField] Button _seOnButton;
 
     [SerializeField] Button _titleButton;
+    [SerializeField] Button _resetButton;
     
     private int _stageIndex;
     
@@ -43,6 +44,14 @@ public class IngamePanel : MonoBehaviour
         {
             Time.timeScale = 1f;
             Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
+            SceneManager.LoadSceneAsync("TitleScene");
+        });
+        
+        _resetButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            Time.timeScale = 1f;
+            Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
+            SaveManager.Instance.ResetData();
             SceneManager.LoadSceneAsync("TitleScene");
         });
         
