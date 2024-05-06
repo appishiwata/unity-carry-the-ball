@@ -33,33 +33,33 @@ public class TitleCanvas : MonoBehaviour
         Audio.Instance.PlayBGM();
         
         _stageInfoText.text = $"Stage {SaveManager.Instance.CurrentStageIndex} / {SaveManager.Instance.StageOpened}";
-        
+
         _startButton.OnClickAsObservable().Subscribe(async _ =>
         {
             _startButtonCanvasGroup.interactable = false;
             _startButton.transform.DOMoveY(50f, 0.5f).SetRelative();
             _startButtonText.transform.DOScale(2f, 0.5f);
             _startButtonCanvasGroup.DOFade(0, 0.5f);
-            
+
             _backgroundParticle.Stop();
             Audio.Instance.PlaySE(Audio.Clip.SelectStage);
-            
+
             await UniTask.Delay(1000);
 
             _ballController.ResetBall();
-            
+
             var sequence = DOTween.Sequence();
             await sequence
                 .Append(_titleText.DOFade(0, 1f))
                 .Append(_startButtonCanvasGroup.DOFade(0, 1f));
-            
+
             Audio.Instance.PlaySE(Audio.Clip.MoveNext);
 
             Camera.main!.transform.DOMoveX(-12f, 0.5f).SetRelative();
-            
+
             await UniTask.Delay(300);
-            
+
             Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{SaveManager.Instance.CurrentStageName}.unity");
-        });
+        }).AddTo(this);
     }
 }

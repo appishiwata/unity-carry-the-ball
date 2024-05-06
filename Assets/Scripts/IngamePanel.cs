@@ -39,13 +39,13 @@ public class IngamePanel : MonoBehaviour
         _bgmOnButton.gameObject.SetActive(SaveManager.Instance.BgmVolume == 0f);
         _seOffButton.gameObject.SetActive(SaveManager.Instance.SeVolume == 1f);
         _seOnButton.gameObject.SetActive(SaveManager.Instance.SeVolume == 0f);
-        
+
         _titleButton.OnClickAsObservable().Subscribe(_ =>
         {
             Time.timeScale = 1f;
             Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
             SceneManager.LoadSceneAsync("TitleScene");
-        });
+        }).AddTo(this);
         
         _resetButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -53,7 +53,7 @@ public class IngamePanel : MonoBehaviour
             Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
             SaveManager.Instance.ResetData();
             SceneManager.LoadSceneAsync("TitleScene");
-        });
+        }).AddTo(this);
         
         _bgmOffButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -61,7 +61,7 @@ public class IngamePanel : MonoBehaviour
             _bgmOnButton.gameObject.SetActive(true);
             Audio.Instance.SetBGMVolume(0f);
             SaveManager.Instance.BgmVolume = 0f;
-        });
+        }).AddTo(this);
         
         _bgmOnButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -69,7 +69,7 @@ public class IngamePanel : MonoBehaviour
             _bgmOnButton.gameObject.SetActive(false);
             Audio.Instance.SetBGMVolume(1f);
             SaveManager.Instance.BgmVolume = 1f;
-        });
+        }).AddTo(this);
         
         _seOffButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -77,7 +77,7 @@ public class IngamePanel : MonoBehaviour
             _seOnButton.gameObject.SetActive(true);
             Audio.Instance.SetSEVolume(0f);
             SaveManager.Instance.SeVolume = 0f;
-        });
+        }).AddTo(this);
         
         _seOnButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -87,12 +87,12 @@ public class IngamePanel : MonoBehaviour
             _seOnButton.gameObject.SetActive(false);
             Audio.Instance.SetSEVolume(1f);
             SaveManager.Instance.SeVolume = 1f;
-        });
-        
+        }).AddTo(this);
+
         _menuButton.OnClickAsObservable().Subscribe(_ =>
         {
             Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
-            
+
             var sequence = DOTween.Sequence();
             sequence.AppendCallback(() =>
                 {
@@ -111,7 +111,7 @@ public class IngamePanel : MonoBehaviour
                     _menuPanel.SetActive(true);
                     Time.timeScale = 0f;
                 });
-        });
+        }).AddTo(this);
         
         _closeButton.OnClickAsObservable().Subscribe(_ =>
         {
@@ -135,17 +135,12 @@ public class IngamePanel : MonoBehaviour
                     _closeButton.gameObject.SetActive(false);
                     _menuButton.gameObject.SetActive(true);
                 });
-        });
+        }).AddTo(this);
 
         _nextButton.OnClickAsObservable().Subscribe(async _ =>
         {
-            /*
-            var nextStageIndex = _stageIndex + 1;
-            var nextStageName = $"Stage{nextStageIndex}";
-            // TODO 共通化
-            Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
-            */
-
+            _nextButton.interactable = false;
+            
             var nextStageIndex = _stageIndex + 1;
             var nextStageName = $"Stage{nextStageIndex}";
             
@@ -163,7 +158,7 @@ public class IngamePanel : MonoBehaviour
             await UniTask.Delay(300);
             
             Addressables.LoadSceneAsync($"Assets/Scenes/Stages/{nextStageName}.unity");
-        });
+        }).AddTo(this);
         
         // チュートリアル用
         _tutorialText1.DOFade(0, 0);
