@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
@@ -15,6 +16,8 @@ public class BallController : MonoBehaviour
     private Vector3 _goalPosition;
     
     private bool _hasReachedGoal;
+    
+    [SerializeField] AdMobInterstitial _adMobInterstitial;
 
     void Start()
     {
@@ -51,7 +54,7 @@ public class BallController : MonoBehaviour
         }).AddTo(this);
     }
     
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
         // ステージ外に出たらスタート地点に戻す
         if (other.CompareTag("OutOfBounds"))
@@ -81,7 +84,7 @@ public class BallController : MonoBehaviour
             }
             
             var sequence = DOTween.Sequence();
-            sequence.AppendInterval(0.1f)
+            await sequence.AppendInterval(0.1f)
                 .AppendCallback(() =>
                 {
                     transform.DOMove(_goalPosition, 0.8f);
@@ -96,6 +99,11 @@ public class BallController : MonoBehaviour
                         ingamePanel.ShowClearPanel();
                     }
                 });
+            
+            if (SaveManager.Instance.StageCleared % 3 == 0)
+            {
+                _adMobInterstitial.ShowAdMobInterstitial();
+            }
         }
     }
     
