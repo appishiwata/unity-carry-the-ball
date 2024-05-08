@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class IngamePanel : MonoBehaviour
 {
+    [SerializeField] Image _bgImage;
     [SerializeField] Button _menuButton;
     [SerializeField] GameObject _menuPanel;
     [SerializeField] Button _closeButton;
@@ -109,6 +110,7 @@ public class IngamePanel : MonoBehaviour
                     _menuButton.gameObject.SetActive(false);
                     _closeButton.gameObject.SetActive(true);
                     _menuPanel.SetActive(true);
+                    _bgImage.gameObject.SetActive(true);
                     Time.timeScale = 0f;
                 });
         }).AddTo(this);
@@ -118,6 +120,7 @@ public class IngamePanel : MonoBehaviour
             Audio.Instance.PlaySE(Audio.Clip.ClickMenu);
             
             _menuPanel.SetActive(false);
+            _bgImage.gameObject.SetActive(false);
             Time.timeScale = 1f;
 
             var sequence = DOTween.Sequence();
@@ -149,6 +152,7 @@ public class IngamePanel : MonoBehaviour
             await sequence
                 .Append(_clearPanelCanvasGroup.DOFade(0, 0.3f))
                 .Append(_stageNameText.DOFade(0, 0.3f))
+                .Append(_bgImage.DOFade(0, 0.3f))
                 .AppendInterval(0.5f);
             
             Audio.Instance.PlaySE(Audio.Clip.MoveNext);
@@ -184,5 +188,6 @@ public class IngamePanel : MonoBehaviour
         }
         
         _clearPanel.SetActive(true);
+        _bgImage.gameObject.SetActive(true);
     }
 }
